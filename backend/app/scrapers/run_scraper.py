@@ -1,14 +1,16 @@
 import sys
 from pathlib import Path
+from datetime import datetime
 
-# Agrega /backend al path para que funcionen los imports
 BASE_DIR = Path(__file__).resolve().parents[2]
 sys.path.append(str(BASE_DIR))
 
-from app.db import SessionLocal
+from app.db import SessionLocal, engine
+from app import models
 from app.models import Product, PriceEntry
 from app.scrapers.ram_scraper import scrape_demo
-from datetime import datetime
+
+models.Base.metadata.create_all(bind=engine)
 
 def ensure_product(db, item):
     p = db.query(Product).filter(Product.name == item['name']).first()

@@ -1,9 +1,8 @@
-
 name: Daily RAM Scraper
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # daily at 06:00 UTC
+    - cron: '0 6 * * *'   # todos los días 06:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -27,11 +26,11 @@ jobs:
         run: |
           python backend/app/scrapers/run_scraper.py
 
-      - name: (optional) Upload to Cloudflare KV
-        if: ${{ secrets.CF_API_TOKEN != '' }}
+      # ESTE PASO YA NO ROMPE NADA, AUNQUE NO TENGAS SECRETS
+      - name: Upload to Cloudflare (optional)
         env:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_KV_NAMESPACE: ${{ secrets.CF_KV_NAMESPACE }}
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
-          echo "Example: this step should call a script to upload DB or JSON to Cloudflare KV using the API."
+          echo "Si los secrets existen, aca iría el upload a Cloudflare"

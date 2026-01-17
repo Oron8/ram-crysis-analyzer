@@ -1,0 +1,9 @@
+
+fastapi
+uvicorn[standard]
+SQLAlchemy
+requests
+beautifulsoup4
+apscheduler
+pydantic
+python-dotenv

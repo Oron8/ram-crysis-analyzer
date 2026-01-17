@@ -1,0 +1,37 @@
+
+name: Daily RAM Scraper
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # daily at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run scraper
+        run: |
+          python backend/app/scrapers/run_scraper.py
+
+      - name: (optional) Upload to Cloudflare KV
+        if: ${{ secrets.CF_API_TOKEN != '' }}
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_KV_NAMESPACE: ${{ secrets.CF_KV_NAMESPACE }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          echo "Example: this step should call a script to upload DB or JSON to Cloudflare KV using the API."

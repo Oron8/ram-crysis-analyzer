@@ -25,6 +25,13 @@ jobs:
       - name: Run scraper
         run: |
           python backend/app/scrapers/run_scraper.py
+      - name: Debug – buscar latest.json
+        run: |
+            echo "Mostrando estructura:"
+            ls
+            echo "Buscando latest.json en todo el repo:"
+            find . -name "latest.json"
+
 
       - name: Upload to Cloudflare (optional)
         env:
